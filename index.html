@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Fake News Detector (LIAR Dataset)</title>
+  <meta charset="UTF-8" />
+  <title>Fake News Detector with PyScript</title>
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f0f2f5;
+      background: #f4f6f8;
       padding: 40px;
       text-align: center;
     }
 
     .container {
       max-width: 600px;
-      margin: auto;
       background: white;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin: auto;
     }
 
     textarea {
@@ -32,18 +34,14 @@
     button {
       padding: 10px 24px;
       font-size: 18px;
-      border: none;
-      background: #28a745;
+      background: #1a73e8;
       color: white;
+      border: none;
       border-radius: 8px;
       cursor: pointer;
     }
 
-    button:hover {
-      background: #218838;
-    }
-
-    #result {
+    #output {
       margin-top: 20px;
       font-size: 18px;
       font-weight: bold;
@@ -52,45 +50,40 @@
 </head>
 <body>
   <div class="container">
-    <h2>Fake News Detector</h2>
-    <p>(Simulated using LIAR Dataset Examples)</p>
-    <textarea id="newsInput" placeholder="Enter a news headline or statement..."></textarea>
-    <button onclick="detectFakeNews()">Check News</button>
-    <div id="result"></div>
+    <h2>Fake News Detector (PyScript)</h2>
+    <p>(Simulated using mini LIAR examples)</p>
+
+    <textarea id="textInput" placeholder="Enter a news statement..."></textarea><br />
+    <button onclick="check_news()">Detect Fake News</button>
+
+    <div id="output"></div>
   </div>
 
-  <script>
-    const liarExamples = {
-      "the economy is in the best shape it’s ever been": "true",
-      "obama is a muslim": "false",
-      "the unemployment rate is below 5 percent": "mostly-true",
-      "hillary clinton sold weapons to isis": "pants-fire",
-      "vaccines cause autism": "false",
-      "donald trump won the popular vote": "false",
-      "joe biden is banning hamburgers": "false",
-      "covid-19 was created in a lab": "barely-true"
-    };
+  <py-script>
+from pyodide.ffi import create_proxy
+from js import document
 
-    function detectFakeNews() {
-      const input = document.getElementById("newsInput").value.toLowerCase().trim();
-      const resultDiv = document.getElementById("result");
+# Simple fake detection logic using phrases from LIAR dataset
+liar_data = {
+    "obama is a muslim": "False",
+    "vaccines cause autism": "False",
+    "donald trump won the popular vote": "False",
+    "the economy is in the best shape": "True",
+    "hillary clinton sold weapons to isis": "Pants-Fire",
+    "covid-19 was created in a lab": "Barely-True",
+    "the unemployment rate is below 5 percent": "Mostly-True"
+}
 
-      if (!input) {
-        resultDiv.textContent = "Please enter a statement or headline.";
-        return;
-      }
+def check_news(*args):
+    text = document.getElementById("textInput").value.lower().strip()
+    result = "Statement not found in sample dataset."
+    for key in liar_data:
+        if key in text:
+            result = f"Prediction: {liar_data[key]}"
+            break
+    document.getElementById("output").innerText = result
 
-      let found = "Statement not found in dataset. Unable to verify.";
-
-      for (const key in liarExamples) {
-        if (input.includes(key)) {
-          found = `Detected: ${liarExamples[key].toUpperCase()}`;
-          break;
-        }
-      }
-
-      resultDiv.textContent = found;
-    }
-  </script>
+check_news = create_proxy(check_news)
+  </py-script>
 </body>
 </html>
