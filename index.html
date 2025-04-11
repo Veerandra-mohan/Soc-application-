@@ -1,74 +1,96 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gistos Clock & Time Zones</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        .clock {
-            font-size: 2em;
-            font-weight: bold;
-            margin: 20px;
-        }
-        .timezones {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .timezone {
-            background: white;
-            margin: 10px;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            font-size: 1.2em;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Fake News Detector (LIAR Dataset)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 10px;
+      font-size: 16px;
+      resize: none;
+      margin-bottom: 15px;
+    }
+
+    button {
+      padding: 10px 24px;
+      font-size: 18px;
+      border: none;
+      background: #28a745;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <h1>Digital Clock & World Time Zones</h1>
-    <div class="clock" id="gistosClock"></div><h2>Time Zones</h2>
-<div class="timezones" id="timezonesContainer"></div>
+  <div class="container">
+    <h2>Fake News Detector</h2>
+    <p>(Simulated using LIAR Dataset Examples)</p>
+    <textarea id="newsInput" placeholder="Enter a news headline or statement..."></textarea>
+    <button onclick="detectFakeNews()">Check News</button>
+    <div id="result"></div>
+  </div>
 
-<script>
-    function updateClock() {
-        const now = new Date();
-        document.getElementById("gistosClock").innerText = now.toLocaleTimeString();
+  <script>
+    const liarExamples = {
+      "the economy is in the best shape it’s ever been": "true",
+      "obama is a muslim": "false",
+      "the unemployment rate is below 5 percent": "mostly-true",
+      "hillary clinton sold weapons to isis": "pants-fire",
+      "vaccines cause autism": "false",
+      "donald trump won the popular vote": "false",
+      "joe biden is banning hamburgers": "false",
+      "covid-19 was created in a lab": "barely-true"
+    };
+
+    function detectFakeNews() {
+      const input = document.getElementById("newsInput").value.toLowerCase().trim();
+      const resultDiv = document.getElementById("result");
+
+      if (!input) {
+        resultDiv.textContent = "Please enter a statement or headline.";
+        return;
+      }
+
+      let found = "Statement not found in dataset. Unable to verify.";
+
+      for (const key in liarExamples) {
+        if (input.includes(key)) {
+          found = `Detected: ${liarExamples[key].toUpperCase()}`;
+          break;
+        }
+      }
+
+      resultDiv.textContent = found;
     }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    const timeZones = [
-        { name: "New York (EST)", offset: -5 },
-        { name: "London (GMT)", offset: 0 },
-        { name: "Berlin (CET)", offset: 1 },
-        { name: "Moscow (MSK)", offset: 3 },
-        { name: "New Delhi (IST)", offset: 5.5 },
-        { name: "Beijing (CST)", offset: 8 },
-        { name: "Tokyo (JST)", offset: 9 },
-        { name: "Sydney (AEST)", offset: 10 }
-    ];
-
-    function updateTimeZones() {
-        const container = document.getElementById("timezonesContainer");
-        container.innerHTML = "";
-        const now = new Date();
-        timeZones.forEach(zone => {
-            const localTime = new Date(now.getTime() + zone.offset * 3600000);
-            const div = document.createElement("div");
-            div.className = "timezone";
-            div.innerText = `${zone.name}: ${localTime.toUTCString().slice(-12, -4)}`;
-            container.appendChild(div);
-        });
-    }
-    setInterval(updateTimeZones, 1000);
-    updateTimeZones();
-</script>
-
+  </script>
 </body>
 </html>
