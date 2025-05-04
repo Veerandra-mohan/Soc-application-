@@ -1,82 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Digital Clock with Time Zones</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #2c3e50, #3498db);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<link rel="stylesheet" href="C:\Users\veeru\OneDrive\Desktop\veeru\vs studio files\html\style.css">
+   <style>
+*
+{
+  text-align: center;
+}
+button {
+text-align: center;
+  height: 350PX;
+  width: 300PX;
+  margin-right: 30PS;
+  margin-left: 30PX;
+  background: linear-gradient(to right, #3ffb8a, #46fcb5);
+    border-radius: 50px;
+    border-color: #f96d29;
+    text-align: justify;
+     margin-top:0px;
+      margin-bottom: 1cm;
+}
+#TASK {
+  text-align: center;
+     width: 390px;
+      background: linear-gradient(135deg, #00ffff, #ff00ff);
+      border: 2px solid orange;
+      cursor: pointer;
+      clip-path: polygon(
+        100% 50%,88.64% 60.35%,93.3% 75%,78.28% 78.28%,75% 93.3%,60.35% 88.64%,50% 100%,39.65% 88.64%,25% 93.3%,21.72% 78.28%,6.7% 75%,11.36% 60.35%,0% 50%,11.36% 39.65%,6.7% 25%,21.72% 21.72%,25% 6.7%,39.65% 11.36%,50% 0%,60.35% 11.36%,75% 6.7%,78.28% 21.72%,93.3% 25%,88.64% 39.65%
+      );
+      transition: all 0.3s ease;
     }
 
-    .clock-container {
-      background: #fff;
-      padding: 30px 40px;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      text-align: center;
+    #TASK:hover {
+      background: linear-gradient(135deg,#f3bc07, #3698f7 );
+      rotate: 180deg;
+      transform: scale(1.1);
+      border-color: #ff00ff;
     }
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-    h1 {
-      margin-bottom: 20px;
-    }
+    #bookmark{
+  font-family: 'Press Start 2P', cursive;
+  background: linear-gradient(to right, #ffe500, #ffa500);
+  color: #001f4d;
+  padding: 20px;
+  border:none;
+  width: 390px;
+  text-align: center;
+  cursor: pointer;
+  height: 350PX;
+  width: 300PX;
+  position: relative;
+  overflow: hidden; /* Important to clip the animation */
+  transition: background 0.6s ease;
+  z-index: 0; /* Ensure the button is above the pseudo-element */
+}
 
-    #timezone {
-      padding: 8px 12px;
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
-
-    #clock {
-      font-size: 48px;
-      font-weight: bold;
-      color: #2c3e50;
-    }
-  </style>
+#bookmark:hover {
+  
+  transform: scale(1.1);
+  clip-path: polygon(9.91% 13.53%, 89.2% 13.53%, 89.2% 89.35%, 49.56% 68.83%, 9.91% 89.35%);
+  background: rgb(7, 167, 225);
+  animation: borderAnimation 0.5s forwards;
+}
+</style>
 </head>
-<body>
-  <div class="clock-container">
-    <h1>Digital Clock</h1>
-    <select id="timezone">
-      <option value="UTC">UTC</option>
-      <option value="Asia/Kolkata">Asia/Kolkata</option>
-      <option value="America/New_York">America/New_York</option>
-      <option value="Europe/London">Europe/London</option>
-      <option value="Asia/Tokyo">Asia/Tokyo</option>
-      <option value="Australia/Sydney">Australia/Sydney</option>
-    </select>
-    <div id="clock">--:--:--</div>
-  </div>
+<body style=" background: linear-gradient(to right, #cb6ce6, #004aad);">
+ <header>
+    <h1 style="font-family:'Gilda Display', serif; font-size: 119px;
+     color: #fcd034; text-align:justify; margin-top:0px; margin-bottom: 1cm;">DID I DONE IT?</h1>
+</header>
+<MAIN>
+    <section>
+<DIV>
+<button onclick="lets_do_list()">LET'S DO THIS</button>    
+<button ID="TASK" >TASK</button>
+<button ID="bookmark" >bookmark</button>
+        </DIV>
+    </section>
+    <br><br>
+    <section id="form_text">
+      <form id="form_text" action="submit_form.php" method="post" style="border: 3px solid black;
+      border-right: 1px;">
+        <div >
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name"><br><br>
+        </div>
+        <div>
+          <label for="date">till time</label>
+          <input type="datetime" id="time" name="time"><br><br>
+        </div>
+        <div>
+          <label for="priority">Priority:</label>
+          <select id="priority" name="priority">
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </form>
+        </div>
+</MAIN>
 
-  <script>
-    const clock = document.getElementById("clock");
-    const timezoneSelector = document.getElementById("timezone");
-
-    function updateClock() {
-      const selectedZone = timezoneSelector.value;
-      const now = new Date();
-
-      const options = {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-        timeZone: selectedZone
-      };
-
-      const timeString = new Intl.DateTimeFormat("en-US", options).format(now);
-      clock.textContent = timeString;
-    }
-
-    timezoneSelector.addEventListener("change", updateClock);
-    setInterval(updateClock, 1000);
-    updateClock(); // Initial call
-  </script>
 </body>
+<script>
+function lets_do_list() {
+document.getElementById("lets_do_list").innerHTML = "You clicked the button!;
+}
+</script>
 </html>
